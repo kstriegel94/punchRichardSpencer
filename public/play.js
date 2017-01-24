@@ -6,14 +6,14 @@ Crafty.sprite('img/RSPunch_out_bar.png', {RS_bar:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_curser.png', {RS_curser:[0,0,88,120]});
 
 Crafty.e('2D, Canvas, DOM, RS_1').attr({x:0,y:0});
-Crafty.e('2D, Canvas, DOM, RS_bar').attr({x:0,y:0});
+Crafty.e('2D, Canvas, DOM, RS_bar').attr({x:0,y:0,z:1});
 //Crafty.e('2D, Canvas, DOM, RS_curser').attr({x:920, y:940});
 
 var health = 100;
 var speedX = 500;
 
 var tick = Crafty.e('2D, Canvas, Color, DOM, Motion, RS_curser')
-  .attr({x:920,y:940})
+  .attr({x:920,y:940,z:2})
   .bind('EnterFrame', function(){
     if(this.x >= 1580 || this.x <= 250) {
       vel.x = -vel.x;
