@@ -60,9 +60,11 @@ var highest_x = Crafty.e('2D, Canvas, DOM, Text')
 
 window.addEventListener('devicemotion', handleMotionEvent, true);
 
+var curr_max = 0;
+
 function handleMotionEvent(event) {
 
-    var curr_max = 0;
+
 
     var x = event.accelerationIncludingGravity.x;
     var y = event.accelerationIncludingGravity.y;
