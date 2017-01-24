@@ -2,7 +2,7 @@ Crafty.init(1920,1080, document.getElementById('game'));
 
 Crafty.sprite('img/RSpunch_out_1.png', {RS_1:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_2.png', {RS_2:[0,0,1920,1080]});
-Crafty.sprite('img/RSPunch_out_bar.png', {RS_bar:[0,0,1920,1080]});
+Crafty.sprite('img/RSpunch_out_bar.png', {RS_bar:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_curser.png', {RS_curser:[0,0,88,120]});
 
 Crafty.e('2D, Canvas, DOM, RS_1').attr({x:0,y:0});
