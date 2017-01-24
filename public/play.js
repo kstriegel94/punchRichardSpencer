@@ -24,6 +24,9 @@ var tick = Crafty.e('2D, Canvas, Color, DOM, Motion, RS_curser')
       Crafty.pause();
     }
 
+
+
+
     //if phone acceleration
       //stop tick
       //if not missed, pause and do animation
