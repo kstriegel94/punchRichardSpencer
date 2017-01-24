@@ -1,4 +1,4 @@
-Crafty.init(1600,900);
+Crafty.init(1600,900, document.getElementById('game'));
 
 Crafty.sprite('img/background_1.png', {background:[0,0,738,417]});
 Crafty.e('2D, Canvas, DOM, background').attr({x:0,y:0});
