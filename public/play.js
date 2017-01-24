@@ -6,7 +6,7 @@ Crafty.sprite('img/RSPunch_out_bar.png', {RS_bar:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_curser.png', {RS_curser:[0,0,88,120]});
 
 Crafty.e('2D, Canvas, DOM, RS_1').attr({x:0,y:0});
-Crafty.e('2D,Canvas,DOM, RS_bar').attr({x:0,y:0});
+Crafty.e('2D, Canvas, DOM, RS_bar').attr({x:0,y:0});
 //Crafty.e('2D, Canvas, DOM, RS_curser').attr({x:920, y:940});
 
 var health = 100;
@@ -53,10 +53,16 @@ var text_z = Crafty.e('2D, Canvas, DOM, Text')
   .attr({x:100, y:500})
   .textColor('red')
   .textFont({size: '75px'});
+var highest_x = Crafty.e('2D, Canvas, DOM, Text')
+  .attr({x:100, y:800})
+  .textColor('red')
+  .textFont({size: '75px'});
 
 window.addEventListener('devicemotion', handleMotionEvent, true);
 
 function handleMotionEvent(event) {
+
+    var curr_max = 0;
 
     var x = event.accelerationIncludingGravity.x;
     var y = event.accelerationIncludingGravity.y;
@@ -70,6 +76,11 @@ function handleMotionEvent(event) {
     text_x.text('accX: ' + x);
     text_y.text('accY: ' + y);
     text_z.text('accZ: ' + z);
+
+    if(x > curr_max) {
+    curr_max = x;
+    highest_x.text('max x: ' + curr_max);
+  }
 }
 
 
