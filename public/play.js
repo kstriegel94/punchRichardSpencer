@@ -1,46 +1,98 @@
-Crafty.init(1600,900, document.getElementById('game'));
+Crafty.init(1920,1080, document.getElementById('game'));
 
-Crafty.sprite('img/background_1.png', {background:[0,0,738,417]});
-Crafty.e('2D, Canvas, DOM, background').attr({x:0,y:0});
+Crafty.sprite('img/RSpunch_out_1.png', {RS_1:[0,0,1920,1080]});
+Crafty.sprite('img/RSpunch_out_2.png', {RS_2:[0,0,1920,1080]});
+Crafty.sprite('img/RSPunch_out_bar.png', {RS_bar:[0,0,1920,1080]});
+Crafty.sprite('img/RSpunch_out_curser.png', {RS_curser:[0,0,88,120]});
+
+Crafty.e('2D, Canvas, DOM, RS_1').attr({x:0,y:0});
+Crafty.e('2D,Canvas,DOM, RS_bar').attr({x:0,y:0});
+//Crafty.e('2D, Canvas, DOM, RS_curser').attr({x:920, y:940});
 
 var health = 100;
 var speedX = 500;
 
-var tick = Crafty.e('2D, Canvas, Color, DOM, Motion, square')
-  .attr({x:738/2,y:360,h:40,w:20})
+var tick = Crafty.e('2D, Canvas, Color, DOM, Motion, RS_curser')
+  .attr({x:920,y:940})
   .bind('EnterFrame', function(){
-    if(this.x >= 650 || this.x <= 50) {
+    if(this.x >= 1580 || this.x <= 250) {
       vel.x = -vel.x;
+    }
+
+    if(health <= 0) {
+      console.log('won game');
+      Crafty.pause();
     }
 
     //if phone acceleration
       //stop tick
       //if not missed, pause and do animation
   })
-  .color('green');
+  .bind('KeyDown', function(e){
+    console.log('mouse clicked');
+
+    if(this.x < 400 && this.x > 350) {
+      health-=15;
+      console.log('great hit');
+      console.log('health: ' + health);
+    }
+  });
 
 var vel = tick.velocity();
 vel.x = speedX;
 
-// window.addEventListener('deviceorientation', onWindowDeviceOrientation, false);
-//
-// function onWindowDeviceOrientation(event) {
-//   if (event.beta) {
-//     console.log('orientation moved');
-//   }
-// }
+var text_x = Crafty.e('2D, Canvas, DOM, Text')
+  .attr({x:100, y:100})
+  .textColor('red')
+  .textFont({size: '75px'});
+var text_y = Crafty.e('2D, Canvas, DOM, Text')
+  .attr({x:100, y:300})
+  .textColor('red')
+  .textFont({size: '75px'});
+var text_z = Crafty.e('2D, Canvas, DOM, Text')
+  .attr({x:100, y:500})
+  .textColor('red')
+  .textFont({size: '75px'});
 
-window.ondevicemotion = function(event) {
-  console.log('device in motion');
+window.addEventListener('devicemotion', handleMotionEvent, true);
 
-  var accelerationX = event.accelerationIncludingGravity.x;
-  var accelerationY = event.accelerationIncludingGravity.y;
-  var accelerationZ = event.accelerationIncludingGravity.z;
+function handleMotionEvent(event) {
 
-  console.log('accX: ' + accelerationX);
-  console.log('accY: ' + accelerationY);
-  console.log('accZ: ' + accelerationZ);
+    var x = event.accelerationIncludingGravity.x;
+    var y = event.accelerationIncludingGravity.y;
+    var z = event.accelerationIncludingGravity.z;
+
+    // Do something awesome.
+    console.log('accX: ' + x);
+    console.log('accY: ' + y);
+    console.log('accZ: ' + z);
+
+    text_x.text('accX: ' + x);
+    text_y.text('accY: ' + y);
+    text_z.text('accZ: ' + z);
 }
+
+
+//  function(event) {
+//   if(event) {
+//       console.log('listening for devicemotion');
+//   Crafty.e('2D, DOM, Text')
+//     .attr({x:100, y:100})
+//     .textFont({size: '100px'})
+//     .text("EVENT LISTENER");
+//   }
+// });
+//
+// window.ondevicemotion = function(event) {
+//
+//   var accelerationX = event.accelerationIncludingGravity.x;
+//   var accelerationY = event.accelerationIncludingGravity.y;
+//   var accelerationZ = event.accelerationIncludingGravity.z;
+//
+//   console.log('accX: ' + accelerationX);
+//   console.log('accY: ' + accelerationY);
+//   console.log('accZ: ' + accelerationZ);
+// }
 
 //check hits
 //miss -0
