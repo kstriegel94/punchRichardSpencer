@@ -55,7 +55,22 @@ Crafty.sprite(1920,1080, 'img/power_hit_text.png',
     powerh_text3:[2,0],
     powerh_text4:[3,0]});
 
-Crafty.defineScene('Play', function() {
+Crafty.audio.add('miss_hit', 'sounds/miss_hit.wav');
+Crafty.audio.add('med_hit', 'sounds/med_hit.wav');
+Crafty.audio.add('pepe_hit', 'sounds/pepe_hit.wav');
+Crafty.audio.add('round_bell', 'sounds/round_bell.wav');
+
+Crafty.defineScene('Round', function(round_num) {
+  var background = Crafty.e('2D, Canvas, DOM, round' + round_num);
+
+  background.timeout(function() {
+    Crafty.enterScene('Play', round_num);
+  }, 3000);
+});
+
+Crafty.defineScene('Play', function(round_num) {
+
+Crafty.audio.play('round_bell');
 
 var miss_text = Crafty.e('2D, DOM, SpriteAnimation, miss_text1')
   .attr({x: 0, y:0, z:100, alpha:0})
@@ -73,7 +88,6 @@ var miss_text = Crafty.e('2D, DOM, SpriteAnimation, miss_text1')
   })
   .bind('AnimationEnd', function() {
     this.alpha = 0;
-    check_KO();
   });
 var hit_text = Crafty.e('2D, DOM, SpriteAnimation, hit_text1')
   .attr({x: 0, y:0, z:100, alpha:0})
@@ -91,7 +105,6 @@ var hit_text = Crafty.e('2D, DOM, SpriteAnimation, hit_text1')
   })
   .bind('AnimationEnd', function() {
     this.alpha = 0;
-    check_KO();
   });
 var powerh_text = Crafty.e('2D, DOM, SpriteAnimation, powerh_text1')
   .attr({x: 0, y:0, z:100, alpha:0})
@@ -109,7 +122,6 @@ var powerh_text = Crafty.e('2D, DOM, SpriteAnimation, powerh_text1')
   })
   .bind('AnimationEnd', function() {
     this.alpha = 0;
-    check_KO();
   });
 
 var power_hit = Crafty.e('2D, DOM, SpriteAnimation, power_hit1')
@@ -124,7 +136,9 @@ var power_hit = Crafty.e('2D, DOM, SpriteAnimation, power_hit1')
   })
   .bind('FrameChange', function() {
     if(this.reelPosition() === 2) {
-      check_health();
+      Crafty.audio.play('pepe_hit');
+      change_background();
+      health-=20;
     }
   });
 var medium_hit = Crafty.e('2D, DOM, SpriteAnimation, medium_hit1')
@@ -139,7 +153,9 @@ var medium_hit = Crafty.e('2D, DOM, SpriteAnimation, medium_hit1')
   })
   .bind('FrameChange', function() {
     if(this.reelPosition() === 2) {
-      check_health();
+      Crafty.audio.play('med_hit');
+      change_background();
+      health-=10;
     }
   });
 var miss_hit = Crafty.e('2D, DOM, SpriteAnimation, miss_hit1')
@@ -154,7 +170,8 @@ var miss_hit = Crafty.e('2D, DOM, SpriteAnimation, miss_hit1')
   })
   .bind('FrameChange', function() {
     if(this.reelPosition() === 2) {
-      check_health();
+      Crafty.audio.play('miss_hit');
+      change_background();
     }
   });
 
@@ -162,10 +179,9 @@ Crafty.sprite('img/RSpunch_out_bar.png', {RS_bar:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_curser.png', {RS_curser:[0,0,88,120]});
 Crafty.e('2D, Canvas, DOM, RS_bar').attr({x:0,y:0,z:50});
 
-var curr_background = Crafty.e('2D, Canvas, DOM, RS1_1').attr({x:0,y:0});
+var curr_background = Crafty.e('2D, Canvas, DOM, RS' + round_num + '_1').attr({x:0,y:0});
 
 var health = 100;
-var level = 1;
 var speedX = 1000;
 
 var tick = Crafty.e('2D, Canvas, Color, DOM, Motion, RS_curser')
@@ -198,45 +214,41 @@ function check_tick() {
   }
   else if(mid_tick < 765 || mid_tick > 1065) {
     console.log('hit');
-    health -= 10;
     medium_hit.animate('mediumHit');
   }
-  else if(mid_tick > 765 && mid_tick < 1065) {
+  else if(mid_tick > 800 && mid_tick < 1065) {
     console.log('super hit!');
-    health -= 20;
     power_hit.animate('powerHit');
   }
 }
 
-function check_KO() {
-  // if(health <= 0)
-  // {
-  //   setTimeout(function() {
-  //     level++;
-  //     health = 100;
-  //     curr_background.destroy();
-  //     curr_background = Crafty.e('2D, Canvas, DOM, RS' + level + '_1')
-  //   }, 3000);
-  // }
-}
-
-function check_health() {
+function change_background() {
   if(health <= 0) {
     //console.log('won game');
-    curr_background.destroy();
-    curr_background = Crafty.e('2D, Canvas, DOM, RS' + level +'_5');
+    round_num++;
+    if(round_num > 3) {
+      Crafty.stop(true);
+      Crafty.enterScene('Start');
+    }
+    else {
+      Crafty.enterScene('Round', round_num);
+    }
   }
   else if(health <= 20) {
     curr_background.destroy();
-    curr_background = Crafty.e('2D, Canvas, DOM, RS' + level + '_4');
+    curr_background = Crafty.e('2D, Canvas, DOM, RS' + round_num +'_5');
   }
-  else if(health <= 50) {
+  else if(health <= 40) {
     curr_background.destroy();
-    curr_background = Crafty.e('2D, Canvas, DOM, RS' + level + '_3');
+    curr_background = Crafty.e('2D, Canvas, DOM, RS' + round_num + '_4');
+  }
+  else if(health <= 60) {
+    curr_background.destroy();
+    curr_background = Crafty.e('2D, Canvas, DOM, RS' + round_num + '_3');
   }
   else if(health <= 80) {
     curr_background.destroy();
-    curr_background = Crafty.e('2D, Canvas, DOM, RS' + level + '_2');
+    curr_background = Crafty.e('2D, Canvas, DOM, RS' + round_num + '_2');
   }
 }
 
