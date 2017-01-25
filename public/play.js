@@ -1,10 +1,16 @@
 Crafty.init(1920,1080, document.getElementById('game'));
 
-Crafty.sprite('img/RSpunch_out_1.png', {RS_1:[0,0,1920,1080]});
-Crafty.sprite('img/RSpunch_out_2.png', {RS_2:[0,0,1920,1080]});
-Crafty.sprite('img/RSpunch_out_3.png', {RS_3:[0,0,1920,1080]});
-Crafty.sprite('img/RSpunch_out_4.png', {RS_4:[0,0,1920,1080]});
-Crafty.sprite('img/RSpunch_out_5.png', {RS_5:[0,0,1920,1080]});
+Crafty.sprite('img/RSpunch_out_1.png', {RS1_1:[0,0,1920,1080]});
+Crafty.sprite('img/RSpunch_out_2.png', {RS1_2:[0,0,1920,1080]});
+Crafty.sprite('img/RSpunch_out_3.png', {RS1_3:[0,0,1920,1080]});
+Crafty.sprite('img/RSpunch_out_4.png', {RS1_4:[0,0,1920,1080]});
+Crafty.sprite('img/RSpunch_out_5.png', {RS1_5:[0,0,1920,1080]});
+
+Crafty.sprite('img/Mpunch_out_1.png', {RS2_1:[0,0,1920,1080]});
+Crafty.sprite('img/Mpunch_out_2.png', {RS2_2:[0,0,1920,1080]});
+Crafty.sprite('img/Mpunch_out_3.png', {RS2_3:[0,0,1920,1080]});
+Crafty.sprite('img/Mpunch_out_4.png', {RS2_4:[0,0,1920,1080]});
+Crafty.sprite('img/Mpunch_out_5.png', {RS2_5:[0,0,1920,1080]});
 
 Crafty.sprite(1920,1080, 'img/power_hit.png',
   {power_hit1:[0,0],
@@ -57,6 +63,7 @@ var miss_text = Crafty.e('2D, DOM, SpriteAnimation, miss_text1')
   })
   .bind('AnimationEnd', function() {
     this.alpha = 0;
+    check_KO();
   });
 var hit_text = Crafty.e('2D, DOM, SpriteAnimation, hit_text1')
   .attr({x: 0, y:0, z:100, alpha:0})
@@ -74,6 +81,7 @@ var hit_text = Crafty.e('2D, DOM, SpriteAnimation, hit_text1')
   })
   .bind('AnimationEnd', function() {
     this.alpha = 0;
+    check_KO();
   });
 var powerh_text = Crafty.e('2D, DOM, SpriteAnimation, powerh_text1')
   .attr({x: 0, y:0, z:100, alpha:0})
@@ -91,6 +99,7 @@ var powerh_text = Crafty.e('2D, DOM, SpriteAnimation, powerh_text1')
   })
   .bind('AnimationEnd', function() {
     this.alpha = 0;
+    check_KO();
   });
 
 var power_hit = Crafty.e('2D, DOM, SpriteAnimation, power_hit1')
@@ -143,9 +152,10 @@ Crafty.sprite('img/RSpunch_out_bar.png', {RS_bar:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_curser.png', {RS_curser:[0,0,88,120]});
 Crafty.e('2D, Canvas, DOM, RS_bar').attr({x:0,y:0,z:50});
 
-var curr_background = Crafty.e('2D, Canvas, DOM, RS_1').attr({x:0,y:0});
+var curr_background = Crafty.e('2D, Canvas, DOM, RS1_1').attr({x:0,y:0});
 
 var health = 100;
+var level = 1;
 var speedX = 1000;
 
 var tick = Crafty.e('2D, Canvas, Color, DOM, Motion, RS_curser')
@@ -188,24 +198,35 @@ function check_tick() {
   }
 }
 
+function check_KO() {
+  // if(health <= 0)
+  // {
+  //   setTimeout(function() {
+  //     level++;
+  //     health = 100;
+  //     curr_background.destroy();
+  //     curr_background = Crafty.e('2D, Canvas, DOM, RS' + level + '_1')
+  //   }, 3000);
+  // }
+}
+
 function check_health() {
   if(health <= 0) {
     //console.log('won game');
     curr_background.destroy();
-    curr_background = Crafty.e('2D, Canvas, DOM, RS_5');
-    //Crafty.pause();
+    curr_background = Crafty.e('2D, Canvas, DOM, RS' + level +'_5');
   }
   else if(health <= 20) {
     curr_background.destroy();
-    curr_background = Crafty.e('2D, Canvas, DOM, RS_4');
+    curr_background = Crafty.e('2D, Canvas, DOM, RS' + level + '_4');
   }
   else if(health <= 50) {
     curr_background.destroy();
-    curr_background = Crafty.e('2D, Canvas, DOM, RS_3');
+    curr_background = Crafty.e('2D, Canvas, DOM, RS' + level + '_3');
   }
   else if(health <= 80) {
     curr_background.destroy();
-    curr_background = Crafty.e('2D, Canvas, DOM, RS_2');
+    curr_background = Crafty.e('2D, Canvas, DOM, RS' + level + '_2');
   }
 }
 
@@ -253,35 +274,3 @@ function handleMotionEvent(event) {
     highest_x.text('max x: ' + curr_max);
   }
 }
-
-
-//  function(event) {
-//   if(event) {
-//       console.log('listening for devicemotion');
-//   Crafty.e('2D, DOM, Text')
-//     .attr({x:100, y:100})
-//     .textFont({size: '100px'})
-//     .text("EVENT LISTENER");
-//   }
-// });
-//
-// window.ondevicemotion = function(event) {
-//
-//   var accelerationX = event.accelerationIncludingGravity.x;
-//   var accelerationY = event.accelerationIncludingGravity.y;
-//   var accelerationZ = event.accelerationIncludingGravity.z;
-//
-//   console.log('accX: ' + accelerationX);
-//   console.log('accY: ' + accelerationY);
-//   console.log('accZ: ' + accelerationZ);
-// }
-
-//check hits
-//miss -0
-//good -5
-//solid -10
-//awesome -15
-
-//if health at 80, 60, 40, 20, dead
-
-//if health is below or equal to 0, win
