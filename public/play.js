@@ -268,10 +268,10 @@ function handleMotionEvent(event) {
     text_x.text('accX: ' + x);
     text_y.text('accY: ' + y);
     text_z.text('accZ: ' + z);
+    highest_x.text('max x: ' + curr_max);
 
     if(x > 10) {
     curr_max = x;
-    highest_x.text('max x: ' + curr_max);
     check_tick();
   }
 }
