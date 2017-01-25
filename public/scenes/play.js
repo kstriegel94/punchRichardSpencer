@@ -1,5 +1,3 @@
-Crafty.init(1920,1080, document.getElementById('game'));
-
 Crafty.sprite('img/RSpunch_out_1.png', {RS1_1:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_2.png', {RS1_2:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_3.png', {RS1_3:[0,0,1920,1080]});
@@ -11,6 +9,16 @@ Crafty.sprite('img/Mpunch_out_2.png', {RS2_2:[0,0,1920,1080]});
 Crafty.sprite('img/Mpunch_out_3.png', {RS2_3:[0,0,1920,1080]});
 Crafty.sprite('img/Mpunch_out_4.png', {RS2_4:[0,0,1920,1080]});
 Crafty.sprite('img/Mpunch_out_5.png', {RS2_5:[0,0,1920,1080]});
+
+Crafty.sprite('img/Hpunch_out_1.png', {RS3_1:[0,0,1920,1080]});
+Crafty.sprite('img/Hpunch_out_2.png', {RS3_2:[0,0,1920,1080]});
+Crafty.sprite('img/Hpunch_out_3.png', {RS3_3:[0,0,1920,1080]});
+Crafty.sprite('img/Hpunch_out_4.png', {RS3_4:[0,0,1920,1080]});
+Crafty.sprite('img/Hpunch_out_5.png', {RS3_5:[0,0,1920,1080]});
+
+Crafty.sprite('img/round-1.png', {round1:[0,0,1920,1080]});
+Crafty.sprite('img/round-2.png', {round2:[0,0,1920,1080]});
+Crafty.sprite('img/round-3.png', {round3:[0,0,1920,1080]});
 
 Crafty.sprite(1920,1080, 'img/power_hit.png',
   {power_hit1:[0,0],
@@ -46,6 +54,8 @@ Crafty.sprite(1920,1080, 'img/power_hit_text.png',
     powerh_text2:[1,0],
     powerh_text3:[2,0],
     powerh_text4:[3,0]});
+
+Crafty.defineScene('Play', function() {
 
 var miss_text = Crafty.e('2D, DOM, SpriteAnimation, miss_text1')
   .attr({x: 0, y:0, z:100, alpha:0})
@@ -172,7 +182,7 @@ var tick = Crafty.e('2D, Canvas, Color, DOM, Motion, RS_curser')
     console.log('mouse clicked');
 
     //power_hit.animate('powerHit');
-    //check_tick();
+    check_tick();
 
     //if(this.x < 400 && this.x > 350) {
       //health-=10;
@@ -268,10 +278,11 @@ function handleMotionEvent(event) {
     text_x.text('accX: ' + x);
     text_y.text('accY: ' + y);
     text_z.text('accZ: ' + z);
-    highest_x.text('max x: ' + curr_max);
 
     if(x > 10) {
     curr_max = x;
+    highest_x.text('max x: ' + curr_max);
     check_tick();
   }
 }
+});
