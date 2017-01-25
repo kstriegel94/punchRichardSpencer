@@ -172,7 +172,7 @@ var tick = Crafty.e('2D, Canvas, Color, DOM, Motion, RS_curser')
     console.log('mouse clicked');
 
     //power_hit.animate('powerHit');
-    check_tick();
+    //check_tick();
 
     //if(this.x < 400 && this.x > 350) {
       //health-=10;
@@ -269,8 +269,9 @@ function handleMotionEvent(event) {
     text_y.text('accY: ' + y);
     text_z.text('accZ: ' + z);
 
-    if(x > curr_max) {
+    if(x > 10) {
     curr_max = x;
     highest_x.text('max x: ' + curr_max);
+    check_tick();
   }
 }
