@@ -1,3 +1,59 @@
+var io = io.connect();
+var controller_state = {};
+
+if(window.location.href.indexOf('?id=') > 0) {
+  io.emit('controller_connect', window.location.href.split('?id=')[1]);
+}
+
+else {
+io.on('connect', function() {
+io.emit('game_connect');
+
+var qr = document.createElement('div');
+
+qr.id = "qr";
+
+document.body.appendChild(qr);
+
+var game_connected = function() {
+  var url = 'http://192.168.1.13:8585?id=' + io.id;
+  var qr_code = new QRCode("qr");
+  qr_code.makeCode(url);
+  io.removeListener('game_connected', game_connected);
+};
+
+io.on('game_connected', game_connected);
+});
+}
+
+io.on('controller_connected', function(connected) {
+  if (connected) {
+    alert('connected!');
+    qr.style.display = "none";
+
+    var controller_state = {
+      steer: 0
+    },
+    emit_updates = function() {
+      io.emit('controller_state_change', controller_state);
+    }
+    devicemotion = function(e) {
+      controller_state.steer = e.accelerationIncludingGravity.y/100;
+      emit_updates();
+    }
+
+    document.body.addEventListener('devicemotion', devicemotion, false);
+  }
+  else {
+    alert('not connected!');
+    qr.style.display = "block";
+  }
+});
+
+io.on('controller_state_change', function(state) {
+  controller_state = state;
+});
+
 Crafty.sprite('img/RSpunch_out_1.png', {RS1_1:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_2.png', {RS1_2:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_3.png', {RS1_3:[0,0,1920,1080]});
@@ -272,29 +328,36 @@ var highest_x = Crafty.e('2D, Canvas, DOM, Text')
   .textColor('red')
   .textFont({size: '75px'});
 
-window.addEventListener('devicemotion', handleMotionEvent, true);
+//window.addEventListener('devicemotion', handleMotionEvent, true);
 
 var curr_max = 0;
 
-function handleMotionEvent(event) {
+// function handleMotionEvent(event) {
+//
+//     var x = event.accelerationIncludingGravity.x;
+//     var y = event.accelerationIncludingGravity.y;
+//     var z = event.accelerationIncludingGravity.z;
+//
+//     // Do something awesome.
+//     console.log('accX: ' + x);
+//     console.log('accY: ' + y);
+//     console.log('accZ: ' + z);
+//
+//     text_x.text('accX: ' + x);
+//     text_y.text('accY: ' + y);
+//     text_z.text('accZ: ' + z);
+//
+//     if(x > 10) {
+//     curr_max = x;
+//     highest_x.text('max x: ' + curr_max);
+//     check_tick();
+//   }
+// }
 
-    var x = event.accelerationIncludingGravity.x;
-    var y = event.accelerationIncludingGravity.y;
-    var z = event.accelerationIncludingGravity.z;
+console.log(controller_state.accerlerate);
 
-    // Do something awesome.
-    console.log('accX: ' + x);
-    console.log('accY: ' + y);
-    console.log('accZ: ' + z);
-
-    text_x.text('accX: ' + x);
-    text_y.text('accY: ' + y);
-    text_z.text('accZ: ' + z);
-
-    if(x > 10) {
-    curr_max = x;
-    highest_x.text('max x: ' + curr_max);
-    check_tick();
-  }
+if (controller_state.accelerate) {
+  console.log('tapped');
+  check_tick();
 }
 });

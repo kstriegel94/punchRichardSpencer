@@ -1,57 +1,72 @@
 <!DOCTYPE html>
-<html>
 <head>
-  <script language="javascript" type="text/javascript">
-function randomString() {
-	var chars = "0123456789";
-	var string_length = 4;
-	var randomstring = '';
-	for (var i=0; i<string_length; i++) {
-		var rnum = Math.floor(Math.random() * chars.length);
-		randomstring += chars.substring(rnum,rnum+1);
-	}
-	document.randform.randomfield.value = randomstring;
-}
-</script>
-  <title> Punch Richard Spencer </title>
-
+<html>
+  <title> Punch A Nazi </title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="//davidshimjs.github.com/qrcodejs/qrcode.min.js"></script>
 </head>
 <body>
-  <form name="randform">
-<input type="button" value="Create Random String" onClick="randomString();">&nbsp;
-<input type="text" name="randomfield" value="">
-</form>
-
-<!-- /*<style>
-{ margin: 0; padding: 0; box-sizing: border-box; }
-body { font: 13px Helvetica, Arial; }
-form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-#messages { list-style-type: none; margin: 0; padding: 0; }
-#messages li { padding: 5px 10px; }
-#messages li:nth-child(odd) { background: #eee; }
-</style>*/ -->
-
-  <ul id="messages"></ul>
-<form action="">
-  <input id="m" autocomplete="off" /><button>Send</button>
-</form>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-  <script>
-    var socket = io();
-    $('form').submit(function(){
-      socket.emit('chat message', $('#m').val());
-      $('#m').val('');
-      return false;
-    });
-//     socket.on('chat message', function(msg){
-// $('#messages').append($('<li>').text(msg));
-//     });
-  </script>
 
 
+
+<script>
+// var io = io.connect();
+//
+// if(window.location.href.indexOf('?id=') > 0) {
+//   io.emit('controller_connect', window.location.href.split('?id=')[1]);
+// }
+//
+// else {
+// io.on('connect', function() {
+// io.emit('game_connect');
+//
+// var qr = document.createElement('div');
+//
+// qr.id = "qr";
+//
+// document.body.appendChild(qr);
+//
+// var game_connected = function() {
+//   var url = 'http://192.168.1.13:8585?id=' + io.id;
+//   var qr_code = new QRCode("qr");
+//   qr_code.makeCode(url);
+//   io.removeListener('game_connected', game_connected);
+// };
+//
+// io.on('game_connected', game_connected);
+// });
+// }
+//
+// io.on('controller_connected', function(connected) {
+//   if (connected) {
+//     alert('connected!');
+//     qr.style.display = "none";
+//
+//     var controller_state = {
+//       accelerate: false
+//     },
+//     emit_updates = function() {
+//       io.emit('controller_state_change', controller_state);
+//     }
+//     touchstart = function(e) {
+//       e.preventDefault();
+//       controller_state.accelerate = true;
+//       emit_updates();
+//     }
+//
+//     document.body.addEventListener('touchstart', touchstart, false);
+//   }
+//   else {
+//     alert('not connected!');
+//     qr.style.display = "block";
+//   }
+// });
+//
+// io.on('controller_state_change', function(state) {
+//   controller_state = state;
+// });
+//
+// </script>
 
   <div id="game"></div>
   <script src="crafty-min.js"></script>
