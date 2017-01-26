@@ -88,6 +88,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 //var server = app.listen(process.env.PORT || 8585, function(){
 //	console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 //});
-http.listen(8585, function() {
+http.listen(process.env.PORT || 8585, function() {
   console.log('listening on 8585');
 });
