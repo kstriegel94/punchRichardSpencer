@@ -1,58 +1,58 @@
-var io = io.connect();
-var controller_state = {};
-
-if(window.location.href.indexOf('?id=') > 0) {
-  io.emit('controller_connect', window.location.href.split('?id=')[1]);
-}
-
-else {
-io.on('connect', function() {
-io.emit('game_connect');
-
-var qr = document.createElement('div');
-
-qr.id = "qr";
-
-document.body.appendChild(qr);
-
-var game_connected = function() {
-  var url = 'http://192.168.1.13:8585?id=' + io.id;
-  var qr_code = new QRCode("qr");
-  qr_code.makeCode(url);
-  io.removeListener('game_connected', game_connected);
-};
-
-io.on('game_connected', game_connected);
-});
-}
-
-io.on('controller_connected', function(connected) {
-  if (connected) {
-    alert('connected!');
-    qr.style.display = "none";
-
-    var controller_state = {
-      steer: 0
-    },
-    emit_updates = function() {
-      io.emit('controller_state_change', controller_state);
-    }
-    devicemotion = function(e) {
-      controller_state.steer = e.accelerationIncludingGravity.y/100;
-      emit_updates();
-    }
-
-    document.body.addEventListener('devicemotion', devicemotion, false);
-  }
-  else {
-    alert('not connected!');
-    qr.style.display = "block";
-  }
-});
-
-io.on('controller_state_change', function(state) {
-  controller_state = state;
-});
+// var io = io.connect();
+// var controller_state = {};
+//
+// if(window.location.href.indexOf('?id=') > 0) {
+//   io.emit('controller_connect', window.location.href.split('?id=')[1]);
+// }
+//
+// else {
+// io.on('connect', function() {
+// io.emit('game_connect');
+//
+// var qr = document.createElement('div');
+//
+// qr.id = "qr";
+//
+// document.body.appendChild(qr);
+//
+// var game_connected = function() {
+//   var url = 'http://192.168.1.13:8585?id=' + io.id;
+//   var qr_code = new QRCode("qr");
+//   qr_code.makeCode(url);
+//   io.removeListener('game_connected', game_connected);
+// };
+//
+// io.on('game_connected', game_connected);
+// });
+// }
+//
+// io.on('controller_connected', function(connected) {
+//   if (connected) {
+//     alert('connected!');
+//     qr.style.display = "none";
+//
+//     var controller_state = {
+//       steer: 0
+//     },
+//     emit_updates = function() {
+//       io.emit('controller_state_change', controller_state);
+//     }
+//     devicemotion = function(e) {
+//       controller_state.steer = e.accelerationIncludingGravity.y/100;
+//       emit_updates();
+//     }
+//
+//     document.body.addEventListener('devicemotion', devicemotion, false);
+//   }
+//   else {
+//     alert('not connected!');
+//     qr.style.display = "block";
+//   }
+// });
+//
+// io.on('controller_state_change', function(state) {
+//   controller_state = state;
+// });
 
 Crafty.sprite('img/RSpunch_out_1.png', {RS1_1:[0,0,1920,1080]});
 Crafty.sprite('img/RSpunch_out_2.png', {RS1_2:[0,0,1920,1080]});
